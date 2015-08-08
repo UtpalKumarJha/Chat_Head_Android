@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.broadcasting"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/chatting"
+        android:label="@string/app_name" >
+        <activity
+            android:name="com.example.broadcasting.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Invisible" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.broadcasting.floatingchat"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+
+        <service android:name="com.example.broadcasting.chathead" >
+        </service>
+
+        <receiver android:name="com.example.broadcasting.receive" >
+            <intent-filter>
+                <action android:name="SmsMessage.intent.MAIN" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.broadcasting.newreceive" >
+            <intent-filter>
+                <action android:name="SmsMessage.intent.SECOND" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
