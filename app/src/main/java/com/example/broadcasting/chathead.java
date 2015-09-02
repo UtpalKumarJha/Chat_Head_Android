@@ -41,8 +41,23 @@ public class chathead extends Service
 	{
 		return null;
 	}
-	
-	
+
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		// message received at this point rest all is bakchodi bas yahi kaam ki chiz hai
+		String str="";
+		Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+		if (intent.getStringExtra("sms") != null) {
+			{
+				str = intent.getStringExtra("sms");//get data here sended from BroadcastReceiver
+			}
+
+		}
+		Toast.makeText(this,str, Toast.LENGTH_SHORT).show();
+		return super.onStartCommand(intent, flags, startId);
+	}
+
 	@Override
 	public boolean onUnbind(Intent intent) {
 		this.unregisterReceiver(this.mIntentReceiver);
@@ -53,7 +68,7 @@ public class chathead extends Service
 	@Override
 	public void onCreate()
 	{
-        		
+
 		wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 		iv = new ImageView(this);
 		iv.setImageResource(R.drawable.fb);
@@ -78,6 +93,8 @@ public class chathead extends Service
 		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 				WindowManager.LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.WRAP_CONTENT,
+
+
 				WindowManager.LayoutParams.TYPE_PHONE,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 				PixelFormat.TRANSLUCENT);
@@ -87,83 +104,73 @@ public class chathead extends Service
 		params.y = 0;
 
 		wm.addView(iv, params);
-		iv.setOnTouchListener(new View.OnTouchListener()
-		{
+		iv.setOnTouchListener(new View.OnTouchListener() {
 
 			@SuppressLint("NewApi")
 			@Override
-			public boolean onTouch(View v, MotionEvent arg1)
-			{
-				switch (arg1.getAction()) 
-				{
-				case MotionEvent.ACTION_DOWN:
-					initialX = params.x;
-					initialY = params.y;
-					initialTouchX = arg1.getRawX();
-					initialTouchY = arg1.getRawY();
-					return true;
-				case MotionEvent.ACTION_UP:
-					params.x = initialX
-							+ (int) (arg1.getRawX() - initialTouchX);
-					params.y = initialY
-							+ (int) (arg1.getRawY() - initialTouchY);
-					
-					if(params.y<=700)
-					{  
-						
-						final IntentFilter intentFilter = new IntentFilter("SmsMessage.intent.MAIN");
-						
-						mIntentReceiver = new BroadcastReceiver()
-						{
+			public boolean onTouch(View v, MotionEvent arg1) {
+				switch (arg1.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						initialX = params.x;
+						initialY = params.y;
+						initialTouchX = arg1.getRawX();
+						initialTouchY = arg1.getRawY();
+						return true;
+					case MotionEvent.ACTION_UP:
+						params.x = initialX
+								+ (int) (arg1.getRawX() - initialTouchX);
+						params.y = initialY
+								+ (int) (arg1.getRawY() - initialTouchY);
 
-							@Override
-							public void onReceive(Context context, Intent intent)
-							{
-								
-								
-							    final String number = intent.getStringExtra("sender");
-							    final String string = intent.getStringExtra("sms");
-							    Toast.makeText(context, "let's see",Toast.LENGTH_SHORT).show();
-							    Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("sender", number).putExtra("sms", string);
-							    context.registerReceiver(mIntentReceiver, intentFilter);
-							    in.setClass(chathead.this,floatingchat.class);
-								in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								startActivity(in);
-							}
-							
-							
-							
-						};
-					}
+						if (params.y <= 700) {
 
-					if (params.y < 800 && params.y > 700)
-						{
-						  wm.removeView(iv);
+							mIntentReceiver = new BroadcastReceiver() {
+
+								@Override
+								public void onReceive(Context context, Intent intent) {
+									Toast.makeText(getApplicationContext(), "let's see", Toast.LENGTH_SHORT).show();
+									final String number = intent.getStringExtra("sender");
+									final String string = intent.getStringExtra("sms");
+									Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("sender", number).putExtra("sms", string);
+									in.setClass(chathead.this, floatingchat.class);
+									in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									startActivity(in);
+								}
+
+
+
+							};
+
+							final IntentFilter intentFilter = new IntentFilter("com.android.activity.SEND_DATA");
+							registerReceiver(mIntentReceiver, intentFilter);
+
 						}
-					if (params.x >= 240)
-						params.x = 480;
-					else
-						params.x = 0;
 
-					return true;
-				case MotionEvent.ACTION_MOVE:
-					params.x = initialX
-							+ (int) (arg1.getRawX() - initialTouchX);
-					params.y = initialY
-							+ (int) (arg1.getRawY() - initialTouchY);
-					wm.updateViewLayout(v, params);
-					return true;
-					
+						if (params.y < 800 && params.y > 700) {
+							wm.removeView(iv);
+						}
+						if (params.x >= 240)
+							params.x = 480;
+						else
+							params.x = 0;
+
+						return true;
+					case MotionEvent.ACTION_MOVE:
+						params.x = initialX
+								+ (int) (arg1.getRawX() - initialTouchX);
+						params.y = initialY
+								+ (int) (arg1.getRawY() - initialTouchY);
+						wm.updateViewLayout(v, params);
+						return true;
+
 				}
 
 				return false;
-				
-				
-				
+
+
 			}
-			
-			
-			
+
+
 		});
 
 		
@@ -171,12 +178,7 @@ public class chathead extends Service
 		super.onCreate();
 	}
 
-	
-	
-	
-	
-	
-	
+
 	
 
 }

@@ -2,7 +2,6 @@ package com.example.broadcasting;
 
 import android.app.Activity;
 import android.app.Service;
-//import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -19,15 +18,13 @@ public class floatingchat extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
-		setContentView(R.layout.floatinglayout);
-		
-				
+		super.onCreate(savedInstanceState);
+		        setContentView(R.layout.floatinglayout);
 				btn=(Button)findViewById(R.id.bt1);
 				btn1=(Button)findViewById(R.id.bt2);
 				ed1=(EditText)findViewById(R.id.ed1);
 				ed2=(EditText)findViewById(R.id.ed2);
 				ed3=(EditText)findViewById(R.id.ed3);
-		
 	}
 
 	@Override

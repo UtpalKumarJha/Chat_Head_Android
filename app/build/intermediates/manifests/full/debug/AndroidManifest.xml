@@ -18,8 +18,7 @@
         android:label="@string/app_name" >
         <activity
             android:name="com.example.broadcasting.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Invisible" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,12 +36,7 @@
 
         <receiver android:name="com.example.broadcasting.receive" >
             <intent-filter>
-                <action android:name="SmsMessage.intent.MAIN" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="com.example.broadcasting.newreceive" >
-            <intent-filter>
-                <action android:name="SmsMessage.intent.SECOND" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
     </application>

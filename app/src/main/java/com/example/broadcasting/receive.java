@@ -14,30 +14,26 @@ public class receive extends BroadcastReceiver {
 	public final String TAG	= "hello";
 	
 	@Override
-	public void onReceive(Context context, Intent intent) 
+	public void onReceive(Context context, Intent intent)
 	{
-		
+		//Toast.makeText(context, "received and application started",Toast.LENGTH_SHORT).show();
 		Bundle extras = intent.getExtras();
 		if(extras==null)
 			return;
 	
 		Object[] pdus = (Object[]) extras.get("pdus");
-		 for (int i = 0; i < pdus.length; i++) 
-	 {
+		for (int i = 0; i < pdus.length; i++)
+	    {
 		 SmsMessage SMessage = SmsMessage.createFromPdu((byte[]) pdus[i]);
 		 String sender = SMessage.getOriginatingAddress();
 		 String sms = SMessage.getMessageBody();
-		//custom intent for broadcasting event
-		Intent in = new Intent("SmsMessage.intent.MAIN").putExtra("sender", sender).putExtra("sms", sms);
-		in.setClass(context, chathead.class);
-		Toast.makeText(context, "received and application started",Toast.LENGTH_SHORT).show();
-		context.startService(in);
-		
-    }
-		
-		
-		
-		
+
+		 	Intent in = new Intent("SmsMessage.intent.MAIN").putExtra("sender", sender).putExtra("sms", sms);
+			Toast.makeText(context, "received and application started",Toast.LENGTH_SHORT).show();
+		 	in.setClass(context, chathead.class);
+
+		 	context.startService(in);
+        }
 		
 	}
 
