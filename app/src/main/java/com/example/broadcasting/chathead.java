@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Shader.TileMode;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,6 +30,8 @@ public class chathead extends Service
 	int initialY;
 	float initialTouchX;
 	float initialTouchY;
+	long DOUBLE_CLICK_TIME_DELTA = 300;//milliseconds
+	long lastClickTime = 0;
 	Button bt;
 	EditText ed;
 	TextView tv;
@@ -53,13 +56,12 @@ public class chathead extends Service
 			number = intent.getStringExtra("sender");
 		}
 
-
-
 		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override
-	public boolean onUnbind(Intent intent) {
+	public boolean onUnbind(Intent intent)
+	{
 		this.unregisterReceiver(this.mIntentReceiver);
 		return super.onUnbind(intent);
 	}
@@ -102,68 +104,78 @@ public class chathead extends Service
 		params.y = 0;
 
 		wm.addView(iv, params);
+		DisplayMetrics dis = getBaseContext().getResources().getDisplayMetrics();
 
-		iv.setOnTouchListener(new View.OnTouchListener()
-		{
-			@SuppressLint("NewApi")
-			@Override
-			public boolean onTouch(View v, MotionEvent arg1)
-			{
-				switch (arg1.getAction())
-				{
-					case MotionEvent.ACTION_DOWN:
-						initialX = params.x;
-						initialY = params.y;
-						initialTouchX = arg1.getRawX();
-						initialTouchY = arg1.getRawY();
-						return true;
-					case MotionEvent.ACTION_UP:
-						params.x = initialX
-								+ (int) (arg1.getRawX() - initialTouchX);
-						params.y = initialY
-								+ (int) (arg1.getRawY() - initialTouchY);
-
-						if (params.y <= 700)
-						{
-									Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("sender", number).putExtra("sms",sms);
-									in.setClass(chathead.this, floatingchat.class);
-									in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									startActivity(in);
-						}
-						if (params.y < 800 && params.y > 700)
-						{
-							wm.removeView(iv);
-						}
-						if (params.x >= 240)
-							params.x = 480;
-						else
-							params.x = 0;
-
-						return true;
-					case MotionEvent.ACTION_MOVE:
-						params.x = initialX
-								+ (int) (arg1.getRawX() - initialTouchX);
-						params.y = initialY
-								+ (int) (arg1.getRawY() - initialTouchY);
-						wm.updateViewLayout(v, params);
-						return true;
-
-				}
-
-				return false;
+		final int width = dis.widthPixels;
+		final int height = dis.heightPixels;
 
 
-			}
+		iv.setOnTouchListener(new View.OnTouchListener() {
+								  @SuppressLint("NewApi")
+								  @Override
+								  public boolean onTouch(View v, MotionEvent arg1) {
+
+									  switch (arg1.getAction())
+									  {
+										  case MotionEvent.ACTION_DOWN:
+											  initialX = params.x;
+											  initialY = params.y;
+											  initialTouchX = arg1.getRawX();
+											  initialTouchY = arg1.getRawY();
+
+											  long clickTime = System.currentTimeMillis();
+											  if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA)
+											  {
+												  wm.removeView(iv);
+											  }
+											  lastClickTime = clickTime;
+											  return true;
+										  case MotionEvent.ACTION_UP:
+											  params.x = initialX
+													  + (int) (arg1.getRawX() - initialTouchX);
+											  params.y = initialY
+													  + (int) (arg1.getRawY() - initialTouchY);
+
+											  if (params.x <= width && params.y<=height)
+											  {
+												  Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("sender", number).putExtra("sms", sms);
+												  in.setClass(chathead.this, floatingchat.class);
+												  in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+												  startActivity(in);
+											  }
+											  else
+											  {
+												  wm.removeView(iv);
+											  }
+
+											  return true;
+										  case MotionEvent.ACTION_MOVE:
+											  params.x = initialX
+													  + (int) (arg1.getRawX() - initialTouchX);
+											  params.y = initialY
+													  + (int) (arg1.getRawY() - initialTouchY);
+											  wm.updateViewLayout(v, params);
+
+										  if(params.x>=width || params.y>=height)
+										  {
+											  wm.removeView(iv);
+										  }
+                                           return true;
+									  }
+
+									  return true;
 
 
-		});
+								  }
 
-		
-		
-		super.onCreate();
+
+							  }
+
+		);
+
+
+			super.onCreate();
+		}
+
+
 	}
-
-
-	
-
-}
