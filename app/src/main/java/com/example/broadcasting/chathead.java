@@ -3,9 +3,7 @@ package com.example.broadcasting;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -22,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class chathead extends Service
 {
@@ -42,19 +39,22 @@ public class chathead extends Service
 		return null;
 	}
 
-
+	String sms="";
+	String number="";
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// message received at this point rest all is bakchodi bas yahi kaam ki chiz hai
-		String str="";
-		Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
-		if (intent.getStringExtra("sms") != null) {
-			{
-				str = intent.getStringExtra("sms");//get data here sended from BroadcastReceiver
-			}
 
+		if (intent.getStringExtra("sms") != null)
+		{
+			sms = intent.getStringExtra("sms");
 		}
-		Toast.makeText(this,str, Toast.LENGTH_SHORT).show();
+		if(intent.getStringExtra("sender")!=null)
+		{
+			number = intent.getStringExtra("sender");
+		}
+
+
+
 		return super.onStartCommand(intent, flags, startId);
 	}
 
@@ -93,8 +93,6 @@ public class chathead extends Service
 		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 				WindowManager.LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.WRAP_CONTENT,
-
-
 				WindowManager.LayoutParams.TYPE_PHONE,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 				PixelFormat.TRANSLUCENT);
@@ -104,12 +102,15 @@ public class chathead extends Service
 		params.y = 0;
 
 		wm.addView(iv, params);
-		iv.setOnTouchListener(new View.OnTouchListener() {
 
+		iv.setOnTouchListener(new View.OnTouchListener()
+		{
 			@SuppressLint("NewApi")
 			@Override
-			public boolean onTouch(View v, MotionEvent arg1) {
-				switch (arg1.getAction()) {
+			public boolean onTouch(View v, MotionEvent arg1)
+			{
+				switch (arg1.getAction())
+				{
 					case MotionEvent.ACTION_DOWN:
 						initialX = params.x;
 						initialY = params.y;
@@ -122,31 +123,15 @@ public class chathead extends Service
 						params.y = initialY
 								+ (int) (arg1.getRawY() - initialTouchY);
 
-						if (params.y <= 700) {
-
-							mIntentReceiver = new BroadcastReceiver() {
-
-								@Override
-								public void onReceive(Context context, Intent intent) {
-									Toast.makeText(getApplicationContext(), "let's see", Toast.LENGTH_SHORT).show();
-									final String number = intent.getStringExtra("sender");
-									final String string = intent.getStringExtra("sms");
-									Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("sender", number).putExtra("sms", string);
+						if (params.y <= 700)
+						{
+									Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("sender", number).putExtra("sms",sms);
 									in.setClass(chathead.this, floatingchat.class);
 									in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 									startActivity(in);
-								}
-
-
-
-							};
-
-							final IntentFilter intentFilter = new IntentFilter("com.android.activity.SEND_DATA");
-							registerReceiver(mIntentReceiver, intentFilter);
-
 						}
-
-						if (params.y < 800 && params.y > 700) {
+						if (params.y < 800 && params.y > 700)
+						{
 							wm.removeView(iv);
 						}
 						if (params.x >= 240)
