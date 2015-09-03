@@ -138,10 +138,11 @@ public class chathead extends Service
 
 											  if (params.x <= width && params.y<=height)
 											  {
-												  Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("sender", number).putExtra("sms", sms);
+												  Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("se", number).putExtra("ss", sms);
 												  in.setClass(chathead.this, floatingchat.class);
 												  in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 												  startActivity(in);
+
 											  }
 											  else
 											  {
