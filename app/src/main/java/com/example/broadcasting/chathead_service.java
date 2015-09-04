@@ -126,6 +126,7 @@ public class chathead_service extends Service
 											  long clickTime = System.currentTimeMillis();
 											  if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA)
 											  {
+
 												  wm.removeView(iv);
 											  }
 											  lastClickTime = clickTime;
@@ -142,6 +143,7 @@ public class chathead_service extends Service
 												  in.setClass(chathead_service.this, floatingchat_activity.class);
 												  in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 												  startActivity(in);
+												  wm.removeView(iv);
 
 											  }
 											  else
