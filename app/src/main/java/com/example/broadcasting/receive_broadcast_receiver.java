@@ -30,8 +30,8 @@ public class receive_broadcast_receiver extends BroadcastReceiver
 		 	Intent in = new Intent("SmsMessage.intent.MAIN").putExtra("sender", sender).putExtra("sms", sms);
 			Toast.makeText(context, "received and application started",Toast.LENGTH_SHORT).show();
 		 	in.setClass(context, chathead_service.class);
-
 		 	context.startService(in);
+			context.stopService(in);
         }
 		
 	}

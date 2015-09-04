@@ -126,7 +126,6 @@ public class chathead_service extends Service
 											  long clickTime = System.currentTimeMillis();
 											  if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA)
 											  {
-
 												  wm.removeView(iv);
 											  }
 											  lastClickTime = clickTime;
@@ -144,13 +143,11 @@ public class chathead_service extends Service
 												  in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 												  startActivity(in);
 												  wm.removeView(iv);
-
 											  }
 											  else
 											  {
 												  wm.removeView(iv);
 											  }
-
 											  return true;
 										  case MotionEvent.ACTION_MOVE:
 											  params.x = initialX
@@ -159,14 +156,14 @@ public class chathead_service extends Service
 													  + (int) (arg1.getRawY() - initialTouchY);
 											  wm.updateViewLayout(v, params);
 
-										  if(params.x>=width || params.y>=height)
-										  {
-											  wm.removeView(iv);
-										  }
-                                           return true;
+										      if(params.x>=width || params.y>=height)
+										       {
+											     wm.removeView(iv);
+                                               }
+                                               return true;
 									  }
 
-									  return true;
+									  return false;
 
 
 								  }
