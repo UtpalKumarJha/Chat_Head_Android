@@ -22,7 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class chathead extends Service
+public class chathead_service extends Service
 {
 	WindowManager wm,wmi;
 	ImageView iv;
@@ -139,7 +139,7 @@ public class chathead extends Service
 											  if (params.x <= width && params.y<=height)
 											  {
 												  Intent in = new Intent("com.android.activity.SEND_DATA").putExtra("se", number).putExtra("ss", sms);
-												  in.setClass(chathead.this, floatingchat.class);
+												  in.setClass(chathead_service.this, floatingchat_activity.class);
 												  in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 												  startActivity(in);
 

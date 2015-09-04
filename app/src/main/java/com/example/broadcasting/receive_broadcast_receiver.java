@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
-public class receive extends BroadcastReceiver
+public class receive_broadcast_receiver extends BroadcastReceiver
 {
 
 	public final String TAG	= "hello";
@@ -29,7 +29,7 @@ public class receive extends BroadcastReceiver
 
 		 	Intent in = new Intent("SmsMessage.intent.MAIN").putExtra("sender", sender).putExtra("sms", sms);
 			Toast.makeText(context, "received and application started",Toast.LENGTH_SHORT).show();
-		 	in.setClass(context, chathead.class);
+		 	in.setClass(context, chathead_service.class);
 
 		 	context.startService(in);
         }

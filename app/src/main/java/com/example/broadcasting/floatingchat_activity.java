@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class floatingchat extends Activity 
+public class floatingchat_activity extends Activity
 {
 
 	Button btn1,btn;

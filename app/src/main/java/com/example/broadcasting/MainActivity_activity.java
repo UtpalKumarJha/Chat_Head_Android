@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 
-public class MainActivity extends Activity
+public class MainActivity_activity extends Activity
 {
 
 	@Override

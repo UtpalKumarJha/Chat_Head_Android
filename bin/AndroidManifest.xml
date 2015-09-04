@@ -20,7 +20,7 @@
          >
         <activity
             
-            android:name="com.example.broadcasting.MainActivity"
+            android:name="com.example.broadcasting.MainActivity_activity"
             android:label="@string/app_name"
             android:theme="@style/Invisible"> 
             <intent-filter>
@@ -32,7 +32,7 @@
         
         <activity
             
-            android:name="com.example.broadcasting.floatingchat"
+            android:name="com.example.broadcasting.floatingchat_activity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Dialog"> 
             
