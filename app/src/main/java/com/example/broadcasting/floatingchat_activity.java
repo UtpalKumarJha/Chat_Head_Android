@@ -1,19 +1,18 @@
 package com.example.broadcasting;
 
 import android.app.Activity;
-import android.app.Service;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class floatingchat_activity extends Activity
 {
 
 	Button btn1,btn;
 	EditText ed1,ed2,ed3;
-	private Service servicing;
 	String number = " ",string=" ",ans="";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -43,6 +42,7 @@ public class floatingchat_activity extends Activity
 					   ans = ed3.getText().toString();
 					   SmsManager smsManager = SmsManager.getDefault();
 					   smsManager.sendTextMessage(number, null,ans, null, null);
+					   Toast.makeText(getApplicationContext(),"Message sent successfully",Toast.LENGTH_SHORT).show();
 				   }
 			   });
 

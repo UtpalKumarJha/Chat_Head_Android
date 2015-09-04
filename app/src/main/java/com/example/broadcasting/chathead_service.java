@@ -2,7 +2,6 @@ package com.example.broadcasting;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,14 +16,11 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class chathead_service extends Service
 {
-	WindowManager wm,wmi;
+	WindowManager wm;
 	ImageView iv;
 	int initialX;
 	int initialY;
@@ -32,10 +28,7 @@ public class chathead_service extends Service
 	float initialTouchY;
 	long DOUBLE_CLICK_TIME_DELTA = 300;//milliseconds
 	long lastClickTime = 0;
-	Button bt;
-	EditText ed;
-	TextView tv;
-	private BroadcastReceiver mIntentReceiver;
+
 	@Override
 	public IBinder onBind(Intent arg0)
 	{
@@ -62,7 +55,6 @@ public class chathead_service extends Service
 	@Override
 	public boolean onUnbind(Intent intent)
 	{
-		this.unregisterReceiver(this.mIntentReceiver);
 		return super.onUnbind(intent);
 	}
 
